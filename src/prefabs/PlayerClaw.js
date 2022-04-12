@@ -1,6 +1,6 @@
 class PlayerClaw extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y){
-    super(scene, x, y)
+  constructor(scene, x, y, texture, frame){
+    super(scene, x, y, texture, frame);
     scene.add.existing(this);
     this.isFiring = false;
     this.goingDown = false;
@@ -36,12 +36,14 @@ class PlayerClaw extends Phaser.GameObjects.Sprite {
     // Going down
     if (this.goingDown && this.y < startPos && !this.isFiring){
       this.y += this.moveSpeed;
+      this.anims.play('p1Closed');
     }
 
     // Done going down
     if (this.y >= startPos){
       this.goingDown = false;
       this.y = startPos;
+      this.anims.play('p1Open');
     }
   }
 

@@ -5,20 +5,22 @@ class Menu extends Phaser.Scene {
 
   preload() {
     this.load.image('title', './assets/title.png')
-    this.load.image('galaxy', './assets/galaxy.png');
+    this.load.image('background', './assets/background.png');
     this.load.audio('sfx_select', './assets/blip_select12.wav');
     this.load.audio('sfx_explosion', './assets/explosion38.wav');
     this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
   }
 
   create() {
-    this.galaxy = this.add.tileSprite(0,0,640, 480, 'galaxy').setOrigin(0,0);
+    this.background = this.add.tileSprite(0,0,640, 480, 'background').setOrigin(0,0);
     this.title = this.add.image(0, 0, 'title').setOrigin(0,0);
 
     let menuConfig = {
       fontFamily: 'Upheavtt',
       fontSize: '28px',
       color: '#FFFFFF',
+      stroke: '#10141f',
+      strokeThickness: 6,
       align: 'right',
       padding: {
         top: 5,
@@ -36,7 +38,8 @@ class Menu extends Phaser.Scene {
   }
 
   update() {
-    this.galaxy.tilePositionX -= 4;
+    this.background.tilePositionX -= 0.5;
+    this.background.tilePositionY -= 0.5;
 
     if (Phaser.Input.Keyboard.JustDown(keyR)) {
       // Easy

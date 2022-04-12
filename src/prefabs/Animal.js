@@ -1,6 +1,6 @@
 class Animal extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, type){
-    super(scene, x, y, type);
+  constructor(scene, x, y, texture, frame, type){
+    super(scene, x, y, texture, frame, type);
     scene.add.existing(this);
     this.type = type;
     this.startY = y;
