@@ -2,9 +2,12 @@ class Animal extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, frame, type){
     super(scene, x, y, texture, frame, type);
     scene.add.existing(this);
+    this.setDepth(-1);
     this.type = type;
     this.startY = y;
     this.taken = false;
+    this.rotateSpeed = 0.5;
+    this.maxAngle = 30;
 
     // Set move speed
     if (type in game.settings.animalSpeed) this.moveSpeed = game.settings.animalSpeed[type];
@@ -13,29 +16,30 @@ class Animal extends Phaser.GameObjects.Sprite {
       this.moveSpeed = 3;
     }
 
-    // Set direction
-    if (type == "hard" || type == "easy") this.direction = 0;
-    if (type == "med") this.direction = 1;
-
-    // Set value
-    if (type == "hard") this.value = 100;
-    if (type == "med") this.value = 50;
-    if (type == "easy") this.value = 20;
-
-    // Set time added
-    if (type == "hard") this.addedTime = 5000;
-    if (type == "med") this.addedTime = 2000; 
-    if (type == "easy") this.addedTime = 100;
+    if (type == "hard"){
+      this.direction = 0;
+      this.value = 100;
+      this.addedTime = 5000;
+      this.rotatingLeft = true;
+      this.rotatingRight = false;
+    }
+    if (type == "med"){
+      this.direction = 1;
+      this.value = 50;
+      this.addedTime = 2000; 
+      this.rotatingLeft = false;
+      this.rotatingRight = true;
+    }
+    if (type == "easy"){
+      this.direction = 0;
+      this.value = 20;
+      this.addedTime = 100;
+      this.rotatingLeft = true;
+      this.rotatingRight = false;
+    }
   }
 
   update() {
-    // If player hits, move down
-    if (this.taken){
-      if(this.y < startPos) this.y += game.settings.playerSpeed;
-      if(this.y >= startPos) this.reset();
-      return;
-    }
-
     // Left vs Right movement
     if(this.direction == 0){
       this.x -= this.moveSpeed;
@@ -45,17 +49,33 @@ class Animal extends Phaser.GameObjects.Sprite {
       this.x += this.moveSpeed;
       if(this.x >= game.config.width + this.width) this.x = 0;
     }
+    this.rotate();
   }
   
-  pulled(xPlayer, yPlayer) {
-    this.x = xPlayer - this.width/2;
-    this.y = yPlayer - this.height/2;
+  pulled() {
+    this.setAlpha(0);
     this.taken = true;
   }
 
   reset(){
-    this.x = game.config.width;
-    this.y = this.startY;
+    this.setAlpha(1);
     this.taken = false;
+  }
+
+  rotate(){
+    if(this.rotatingLeft){
+      this.angle -= this.rotateSpeed; 
+      if (this.angle <= -this.maxAngle){
+        this.rotatingLeft = false;
+        this.rotatingRight = true;
+      }
+    }
+    if(this.rotatingRight){
+      this.angle += this.rotateSpeed; 
+      if (this.angle >= this.maxAngle){
+        this.rotatingRight = false;
+        this.rotatingLeft = true;
+      }
+    }
   }
 }

@@ -2,6 +2,7 @@ class PlayerClaw extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, frame){
     super(scene, x, y, texture, frame);
     scene.add.existing(this);
+    this.setDepth(1);
     this.isFiring = false;
     this.goingDown = false;
     this.moveSpeed = game.settings.playerSpeed;
