@@ -32,7 +32,7 @@ class Menu extends Phaser.Scene {
     }
 
     this.add.text(game.config.width/2, game.config.height/2 + borderUISize*2, 'Player 1: (W)(D) to Move (F) to Fire', menuConfig).setOrigin(0.5);
-    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*3, 'Player 2: (<-)(->) to Move (Enter) to Fire)', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*3, 'Player 2: (<-)(->) to Move (Enter) to Fire', menuConfig).setOrigin(0.5);
     this.add.text(game.config.width/2, game.config.height/2 + borderUISize*4, 'Press (F) for 1P or (Enter) for 2P', menuConfig).setOrigin(0.5);
 
     // define keys
