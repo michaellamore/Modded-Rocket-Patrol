@@ -6,7 +6,9 @@ class Play extends Phaser.Scene {
   preload() {
     // Static images
     this.load.image('background', './assets/backgroundNEW.png');
-    this.load.image('cable', './assets/cable.png');
+    this.load.image('darkenBG', './assets/darkenBG.png');
+    this.load.image('animalCable', './assets/animalCable.png');
+    this.load.image('playerCable', './assets/playerCable.png');
 
     // Easy
     this.load.image('cat', './assets/cat.png');
@@ -32,9 +34,11 @@ class Play extends Phaser.Scene {
     this.load.image('elephant', './assets/elephant.png');
     this.hardSprites = ['panda', 'lion', 'elephant'];
 
-    // Player
-    this.load.spritesheet('clawOpen', './assets/handOpen.png', {frameWidth: 48, frameHeight: 480});
-    this.load.spritesheet('clawClosed', './assets/handClosed.png', {frameWidth: 48, frameHeight: 480});
+    // Players
+    this.load.spritesheet('p1Open', './assets/p1Open.png', {frameWidth: 48, frameHeight: 48});
+    this.load.spritesheet('p1Closed', './assets/p1Closed.png', {frameWidth: 48, frameHeight: 48});
+    this.load.spritesheet('p2Open', './assets/p2Open.png', {frameWidth: 48, frameHeight: 48});
+    this.load.spritesheet('p2Closed', './assets/p2Closed.png', {frameWidth: 48, frameHeight: 48});
 
     // Effects
     this.load.spritesheet('score20', './assets/score20.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
@@ -50,8 +54,23 @@ class Play extends Phaser.Scene {
     this.background = this.add.tileSprite(0,0,640, 480, 'background').setOrigin(0,0);
     this.background.setDepth(-10);
 
-    // Initialize score
+    // Define keys
+    keyP1Action = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    keyP1Left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    keyP1Right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    keyP2Action = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    keyP2Left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+    keyP2Right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    keyExtraAction = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    
+
+    // Initialize stuff
     this.p1Score = 0;
+    this.p2Score = 0;
+    this.playerArray = [];
+    this.animalArray = [];
+    this.cableArray = [];
+    this.animalSpriteArray = [];
 
     // Display score
     let scoreConfig = {
@@ -62,46 +81,62 @@ class Play extends Phaser.Scene {
       stroke: '#10141f',
       strokeThickness: 6
     }
-    this.scoreLeft = this.add.text(borderPadding*2, borderPadding*2, `Score: ${this.p1Score}`, scoreConfig);
+    this.p1Config = {
+      fontFamily: 'Upheavtt',
+      fontSize: '28px',
+      color: '#4f8fba',
+      align: 'left',
+      stroke: '#10141f',
+      strokeThickness: 6
+    }
+    this.p2Config = {
+      fontFamily: 'Upheavtt',
+      fontSize: '28px',
+      color: '#a53030',
+      align: 'left',
+      stroke: '#10141f',
+      strokeThickness: 6
+    }
+    this.scoreLeft = this.add.text(borderPadding*2, borderPadding*2, `P1 Score: 0`, this.p1Config);
+    if (game.settings.multiplayer) this.scoreRight = this.add.text(game.config.width - borderPadding*2, borderPadding*2, `P2 Score: 0`, this.p2Config).setOrigin(1, 0);
     
     //add claw (player 1)
-    this.p1Claw = new PlayerClaw(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'claw', 0).setOrigin(0.5, 0);
+    this.playerArray.push(
+      new PlayerClaw(this, game.config.width/3, game.config.height - borderUISize - borderPadding, 'p1Open', 0, 0).setOrigin(0.5, 0));
+    if(game.settings.multiplayer) {
+      this.playerArray.push(
+        new PlayerClaw(this, (game.config.width/3)*2, game.config.height - borderUISize - borderPadding, 'p2Open', 0, 1).setOrigin(0.5, 0));
+    }
 
     // add animals (x6) I don't know how to initialize animals automatically... I don't wanna hard code it like this...
-    this.animal01 = new Animal(this, game.config.width, borderUISize*2, "panda", 0, "hard").setOrigin(0.5);
-    this.animal02 = new Animal(this, game.config.width, borderUISize*4, "llama", 0, "med").setOrigin(0.5);
-    this.animal03 = new Animal(this, game.config.width/2, borderUISize*4, "llama", 0, "med").setOrigin(0.5);
-    this.animal04 = new Animal(this, game.config.width, borderUISize*6, "cat", 0, "easy").setOrigin(0.5);
-    this.animal05 = new Animal(this, (game.config.width/3), borderUISize*6, "cat", 0, "easy").setOrigin(0.5);
-    this.animal06 = new Animal(this, (game.config.width/3)*2, borderUISize*6, "cat", 0, "easy").setOrigin(0.5);
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*2, "panda", 0, "hard").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*4, "llama", 0, "med").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width/2, borderUISize*4, "llama", 0, "med").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, (game.config.width/3), borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, (game.config.width/3)*2, borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
 
-    this.animalArray = [this.animal01, this.animal02, this.animal03, this.animal04, this.animal05, this.animal06];
-    this.cableArray = [];
-    
     // Randomize animal sprites at the very start
     for(const animal of this.animalArray) this.changeSprite(animal);
-    for(const animal of this.animalArray) this.cableArray.push(new Cable(this, animal.x, animal.y, 'cable', 0, animal).setOrigin(0.5, 1));
-    
-
-    // Define keys
-    keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-    keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-    keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    // Add cables to the game objects (purely aesthetic, albeit really badly coded)
+    for(const animal of this.animalArray) this.cableArray.push(new Cable(this, animal.x, animal.y, 'animalCable', 0, animal).setOrigin(0.5, 1));
+    for(const player of this.playerArray) this.cableArray.push(new Cable(this, player.x, player.y, 'playerCable', 0, player).setOrigin(0.5, 0));
     
     // Game over flag
     this.gameOver = false;
-
     // Play timer
     this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-        this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or (F) for Menu', scoreConfig).setOrigin(0.5);
-        this.gameOver = true;
+      this.add.image(0, 0, 'darkenBG').setOrigin(0,0).setDepth(1);
+      this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5).setDepth(2);
+      this.getHighscore();
+      this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (SPACE) to Restart or (F) for Menu', scoreConfig).setOrigin(0.5).setDepth(2);
+      this.gameOver = true;
     }, null, this);
     this.timer = this.add.text(game.config.width/2, borderPadding*2, `${this.clock.delay}`, scoreConfig).setOrigin(0.5, 0);
 
     this.generateAnimations();
-    this.p1Claw.anims.play('p1Open');
+    // Fixes a bug where if the player restarts, they can't actually collide with anything. I think...
+    for(const player of this.playerArray) player.reset(); 
   }
 
   update() {
@@ -110,26 +145,37 @@ class Play extends Phaser.Scene {
     this.timer.text = Math.round((this.clock.delay - this.clock.elapsed) / 1000 );
 
     // Key Input for Restart
-    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) this.scene.restart();
-    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) this.scene.start("menuScene");
+    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyExtraAction)) { this.scene.restart(); }
+    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP1Action)) this.scene.start("menuScene");
 
+    // Keep updating game objects until game over
     if (!this.gameOver) {
-      this.p1Claw.update();
+      for(const player of this.playerArray) player.update(); 
       for (const animal of this.animalArray) animal.update();
-      for (const cable of this.cableArray) cable.update();
+    }
+    for (const cable of this.cableArray) cable.update();
+
+    // If there are sprites in the animal sprite array, make em go down
+    if (this.animalSpriteArray.length != 0){
+      for(const sprite of this.animalSpriteArray){
+        sprite.y += game.settings.playerSpeed;
+        if(sprite.y > startPos){
+          // Destroy the sprite
+          sprite.destroy(); 
+          // "Remove element from array" code from https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+          const index = this.animalSpriteArray.indexOf(sprite);
+          if (index > -1) this.animalSpriteArray.splice(index, 1);
+        } 
+      }
     }
 
-    if (this.animalSprite != null){
-      if (this.animalSprite.y > startPos) return;
-      this.animalSprite.y += game.settings.playerSpeed;
-    }
-
-    // check collisions
+    // Check collisions
     for (const animal of this.animalArray){
-      if (animal.taken) return;
-      if (this.checkCollision(this.p1Claw, animal)){
-        this.p1Claw.reset();
-        this.grabAnimal(animal);
+      for (const player of this.playerArray){
+        if (!animal.taken && this.checkCollision(player, animal)){
+          player.reset();
+          this.grabAnimal(player, animal);
+        }
       }
     }
   }
@@ -146,7 +192,9 @@ class Play extends Phaser.Scene {
     else return false;
   }
 
-  grabAnimal(animal) {
+  grabAnimal(player, animal) {
+    console.log(player);
+    if (this.gameOver) return;
     // create effects at animal's position
     let boom = this.add.sprite(animal.x, animal.y, 'explosionNew').setOrigin(0.5);
     boom.anims.play('explodeNew');
@@ -154,7 +202,7 @@ class Play extends Phaser.Scene {
     let scoreEffect = this.add.sprite(animal.x, animal.y - borderPadding*2, `score${animal.value}`).setOrigin(0.5);
     scoreEffect.anims.play(`score${animal.value}`);
 
-    this.animalSprite = this.add.sprite(this.p1Claw.x, this.p1Claw.y, animal.texture.key).setOrigin(0.5);
+    this.animalSpriteArray.push(this.add.sprite(player.x, player.y, animal.texture.key).setOrigin(0.5));
 
     animal.pulled();  
     scoreEffect.on('animationcomplete', () => { 
@@ -162,15 +210,20 @@ class Play extends Phaser.Scene {
     })        
     boom.on('animationcomplete', () => { 
       boom.destroy(); 
-      this.animalSprite.destroy();
-      this.animalSprite = null;
       this.changeSprite(animal);
       animal.reset();
     });
 
     // Add score
-    this.p1Score += animal.value;
-    this.scoreLeft.text = `Score: ${this.p1Score}`;
+    if(player.player == 0){
+      this.p1Score += animal.value;
+      this.scoreLeft.text = `P1 Score: ${this.p1Score}`;
+    }
+    if(player.player == 1){
+      this.p2Score += animal.value;
+      this.scoreRight.text = `P2 Score: ${this.p2Score}`;
+    }
+
     // Add more time
     this.clock.delay += animal.addedTime;
     // Sound
@@ -186,6 +239,18 @@ class Play extends Phaser.Scene {
     // If the new sprite is the same as the previous sprite, choose a new one
     if(newSprite == animal.texture.key) return this.changeSprite(animal);
     animal.setTexture(newSprite);
+  }
+
+  getHighscore(){
+    if(this.p1Score > this.p2Score && this.p1Score > highscore){
+      highscore = this.p1Score;
+      highscoreConfig = this.p1Config;
+    }
+    if(this.p2Score > this.p1Score && this.p2Score > highscore){
+      highscore = this.p2Score;
+      highscoreConfig = this.p2Config;
+    }
+    this.add.text(game.config.width/2, game.config.height/2 + 32, `Current Highscore: ${highscore}`, highscoreConfig).setOrigin(0.5).setDepth(2);
   }
 
   generateAnimations(){
@@ -214,14 +279,27 @@ class Play extends Phaser.Scene {
 
     this.anims.create({
       key: 'p1Closed', 
-      frames: this.anims.generateFrameNumbers('clawClosed', {start: 0, end: 0, first: 0}),
+      frames: this.anims.generateFrameNumbers('p1Closed', {start: 0, end: 0, first: 0}),
       frameRate: 10,
       repeat: -1
     });
 
     this.anims.create({
       key: 'p1Open', 
-      frames: this.anims.generateFrameNumbers('clawOpen', {start: 0, end: 0, first: 0}),
+      frames: this.anims.generateFrameNumbers('p1Open', {start: 0, end: 0, first: 0}),
+      frameRate: 10,
+      repeat: -1
+    });  
+    this.anims.create({
+      key: 'p2Closed', 
+      frames: this.anims.generateFrameNumbers('p2Closed', {start: 0, end: 0, first: 0}),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'p2Open', 
+      frames: this.anims.generateFrameNumbers('p2Open', {start: 0, end: 0, first: 0}),
       frameRate: 10,
       repeat: -1
     });  

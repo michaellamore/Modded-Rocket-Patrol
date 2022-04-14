@@ -4,7 +4,8 @@ class Menu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('title', './assets/title.png')
+    this.load.image('title', './assets/logo.png')
+    this.load.image('darkenBG', './assets/darkenBG.png');
     this.load.image('background', './assets/backgroundNEW.png');
     this.load.audio('sfx_select', './assets/blip_select12.wav');
     this.load.audio('sfx_explosion', './assets/explosion38.wav');
@@ -13,6 +14,7 @@ class Menu extends Phaser.Scene {
 
   create() {
     this.background = this.add.tileSprite(0,0,640, 480, 'background').setOrigin(0,0);
+    this.add.image(0, 0, 'darkenBG').setOrigin(0,0);
     this.title = this.add.image(0, 0, 'title').setOrigin(0,0);
 
     let menuConfig = {
@@ -29,42 +31,55 @@ class Menu extends Phaser.Scene {
       fixedWidth: 0
     }
 
-    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*2, 'Use Arrow Keys to move, (F) to Fire', menuConfig).setOrigin(0.5);
-    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*3, 'Press (R) for Novice or (F) for Expert', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*2, 'Player 1: (W)(D) to Move (F) to Fire', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*3, 'Player 2: (<-)(->) to Move (Enter) to Fire)', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width/2, game.config.height/2 + borderUISize*4, 'Press (F) for 1P or (Enter) for 2P', menuConfig).setOrigin(0.5);
 
     // define keys
-    keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-    keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    keyP1Action = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    keyP2Action = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
   }
 
   update() {
     this.background.tilePositionX -= 0.5;
     this.background.tilePositionY -= 0.5;
 
-    if (Phaser.Input.Keyboard.JustDown(keyR)) {
-      // Easy
+    if (Phaser.Input.Keyboard.JustDown(keyP1Action)) {
+      // 1 Player
       game.settings = {
+        multiplayer: false,
         playerSpeed: 5,
         animalSpeed: {
           hard: 5,
           med: 4,
           easy: 3
         },
-        gameTimer: 60000
+        addedTime: {
+          hard: 5000,
+          med: 2000,
+          easy: 250,
+        },
+        gameTimer: 45000
       }
       this.sound.play('sfx_select');
       this.scene.start('playScene');
     }
-    if (Phaser.Input.Keyboard.JustDown(keyF)) {
-      // Hard
+    if (Phaser.Input.Keyboard.JustDown(keyP2Action)) {
+      // 2 Player
       game.settings = {
-        playerSpeed: 3,
+        multiplayer: true,
+        playerSpeed: 6,
         animalSpeed: {
           hard: 8,
           med: 6,
           easy: 5
         },
-        gameTimer: 45000
+        addedTime: {
+          hard: 2500,
+          med: 1000,
+          easy: 125,
+        },
+        gameTimer: 60000
       }
       this.sound.play('sfx_select');
       this.scene.start('playScene');

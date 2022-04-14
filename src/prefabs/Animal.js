@@ -6,6 +6,7 @@ class Animal extends Phaser.GameObjects.Sprite {
     this.type = type;
     this.startY = y;
     this.taken = false;
+    this.addedTime = game.settings.addedTime[type];
     this.rotateSpeed = 0.5;
     this.maxAngle = 30;
 
@@ -19,21 +20,18 @@ class Animal extends Phaser.GameObjects.Sprite {
     if (type == "hard"){
       this.direction = 0;
       this.value = 100;
-      this.addedTime = 5000;
       this.rotatingLeft = true;
       this.rotatingRight = false;
     }
     if (type == "med"){
       this.direction = 1;
       this.value = 50;
-      this.addedTime = 2000; 
       this.rotatingLeft = false;
       this.rotatingRight = true;
     }
     if (type == "easy"){
       this.direction = 0;
       this.value = 20;
-      this.addedTime = 100;
       this.rotatingLeft = true;
       this.rotatingRight = false;
     }

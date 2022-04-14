@@ -5,13 +5,19 @@ let config = {
   parent: "phaser-canvas",
   pixelArt: true,
   zoom: 1,
+  fps:{
+    target: 60,
+    forceSetTimeOut: true
+  },
   scene: [Menu, Play]
 }
 
 let game = new Phaser.Game(config);
+let highscore = 0;
+let highscoreConfig;
 
 // Reserve keyboard vars
-let keyF, keyR, keyLEFT, keyRIGHT;
+let keyP1Action, keyP1Left, keyP1Right, keyP2Action, keyP2Left, keyP2Right, keyExtraAction;
 
 // UI sizes
 let borderUISize = game.config.width / 15;
