@@ -9,6 +9,7 @@ class Animal extends Phaser.GameObjects.Sprite {
     this.addedTime = game.settings.addedTime[type];
     this.rotateSpeed = 0.5;
     this.maxAngle = 30;
+    this.goingDown = false;
 
     // Set move speed
     if (type in game.settings.animalSpeed) this.moveSpeed = game.settings.animalSpeed[type];
@@ -47,6 +48,15 @@ class Animal extends Phaser.GameObjects.Sprite {
       this.x += this.moveSpeed;
       if(this.x >= game.config.width + this.width) this.x = 0;
     }
+
+    if(this.goingDown){
+      this.y += this.moveSpeed;
+      if(this.y > this.startY){
+        this.goingDown = false;
+        this.y = this.startY;
+      }
+    }
+
     this.rotate();
   }
   
@@ -58,6 +68,8 @@ class Animal extends Phaser.GameObjects.Sprite {
   reset(){
     this.setAlpha(1);
     this.taken = false;
+    this.goingDown = true;
+    this.y = 0;
   }
 
   rotate(){

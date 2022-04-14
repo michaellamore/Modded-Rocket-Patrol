@@ -44,9 +44,7 @@ class Play extends Phaser.Scene {
     this.load.spritesheet('score20', './assets/score20.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
     this.load.spritesheet('score50', './assets/score50.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
     this.load.spritesheet('score100', './assets/score100.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
-
-    // Old Stuff REMOVE LATER
-    this.load.spritesheet('explosionNew', './assets/explosionNew.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 8}); 
+    this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 8}); 
   }
 
   create() {
@@ -109,12 +107,12 @@ class Play extends Phaser.Scene {
     }
 
     // add animals (x6) I don't know how to initialize animals automatically... I don't wanna hard code it like this...
-    this.animalArray.push(new Animal(this, game.config.width, borderUISize*2, "panda", 0, "hard").setOrigin(0.5));
-    this.animalArray.push(new Animal(this, game.config.width, borderUISize*4, "llama", 0, "med").setOrigin(0.5));
-    this.animalArray.push(new Animal(this, game.config.width/2, borderUISize*4, "llama", 0, "med").setOrigin(0.5));
-    this.animalArray.push(new Animal(this, game.config.width, borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
-    this.animalArray.push(new Animal(this, (game.config.width/3), borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
-    this.animalArray.push(new Animal(this, (game.config.width/3)*2, borderUISize*6, "cat", 0, "easy").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*2 + borderPadding, "panda", 0, "hard").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*4 + borderPadding, "llama", 0, "med").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width/2, borderUISize*4 + borderPadding, "llama", 0, "med").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, game.config.width, borderUISize*6 + borderPadding, "cat", 0, "easy").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, (game.config.width/3), borderUISize*6 + borderPadding, "cat", 0, "easy").setOrigin(0.5));
+    this.animalArray.push(new Animal(this, (game.config.width/3)*2, borderUISize*6 + borderPadding, "cat", 0, "easy").setOrigin(0.5));
 
     // Randomize animal sprites at the very start
     for(const animal of this.animalArray) this.changeSprite(animal);
@@ -193,11 +191,10 @@ class Play extends Phaser.Scene {
   }
 
   grabAnimal(player, animal) {
-    console.log(player);
     if (this.gameOver) return;
     // create effects at animal's position
-    let boom = this.add.sprite(animal.x, animal.y, 'explosionNew').setOrigin(0.5);
-    boom.anims.play('explodeNew');
+    let boom = this.add.sprite(animal.x, animal.y, 'explosion').setOrigin(0.5);
+    boom.anims.play('explosion');
 
     let scoreEffect = this.add.sprite(animal.x, animal.y - borderPadding*2, `score${animal.value}`).setOrigin(0.5);
     scoreEffect.anims.play(`score${animal.value}`);
@@ -272,8 +269,8 @@ class Play extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: 'explodeNew', 
-      frames: this.anims.generateFrameNumbers('explosionNew', {start: 0, end: 8, first: 0}),
+      key: 'explosion', 
+      frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 8, first: 0}),
       frameRate: 10
     });
 

@@ -22,7 +22,7 @@ class PlayerClaw extends Phaser.GameObjects.Sprite {
       this.animOpen = 'p2Open';
       this.animClosed = 'p2Closed';
     }
-    if(this.player >= 2) console.error("Max 2 Players. Idk how to code more lol");
+    if(this.player >= 2) console.error("Max 2 Players. Idk how to code for more players lol");
   }
 
   update() {
