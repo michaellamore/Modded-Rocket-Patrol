@@ -143,8 +143,14 @@ class Play extends Phaser.Scene {
     this.timer.text = Math.round((this.clock.delay - this.clock.elapsed) / 1000 );
 
     // Key Input for Restart
-    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyExtraAction)) { this.scene.restart(); }
-    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP1Action)) this.scene.start("menuScene");
+    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyExtraAction)) { 
+      this.scene.restart();
+      this.sound.play('sfx_select'); 
+    }
+    if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP1Action)) {
+      this.scene.start("menuScene");
+      this.sound.play('sfx_select');
+    }
 
     // Keep updating game objects until game over
     if (!this.gameOver) {
@@ -196,7 +202,7 @@ class Play extends Phaser.Scene {
     let boom = this.add.sprite(animal.x, animal.y, 'explosion').setOrigin(0.5);
     boom.anims.play('explosion');
 
-    let scoreEffect = this.add.sprite(animal.x, animal.y - borderPadding*2, `score${animal.value}`).setOrigin(0.5);
+    let scoreEffect = this.add.sprite(animal.x -10, animal.y, `score${animal.value}`).setOrigin(0.5);
     scoreEffect.anims.play(`score${animal.value}`);
 
     this.animalSpriteArray.push(this.add.sprite(player.x, player.y, animal.texture.key).setOrigin(0.5));
@@ -224,7 +230,7 @@ class Play extends Phaser.Scene {
     // Add more time
     this.clock.delay += animal.addedTime;
     // Sound
-    this.sound.play('sfx_explosion');
+    this.sound.play('sfx_animal_grabbed');
   }
 
   changeSprite(animal){

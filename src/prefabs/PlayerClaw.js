@@ -2,7 +2,9 @@ class PlayerClaw extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, frame, player){
     super(scene, x, y, texture, frame, player);
     scene.add.existing(this);
+    this.scene = scene;
     this.setDepth(1);
+
     this.isFiring = false;
     this.goingDown = false;
     this.moveSpeed = game.settings.playerSpeed;
@@ -38,6 +40,7 @@ class PlayerClaw extends Phaser.GameObjects.Sprite {
 
     // fire button
     if (Phaser.Input.Keyboard.JustDown(this.keyAction) && !this.isFiring && !this.goingDown){
+      this.scene.sound.play('sfx_claw_fired');
       this.isFiring = true;
     }
 

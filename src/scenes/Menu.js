@@ -4,12 +4,15 @@ class Menu extends Phaser.Scene {
   }
 
   preload() {
+    // Images
     this.load.image('title', './assets/logo.png')
     this.load.image('darkenBG', './assets/darkenBG.png');
     this.load.image('background', './assets/backgroundNEW.png');
-    this.load.audio('sfx_select', './assets/blip_select12.wav');
-    this.load.audio('sfx_explosion', './assets/explosion38.wav');
-    this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+
+    // Audio
+    this.load.audio('sfx_select', './assets/menu_select.wav');
+    this.load.audio('sfx_animal_grabbed', './assets/animal_grabbed.wav');
+    this.load.audio('sfx_claw_fired', './assets/claw_fired.wav');
   }
 
   create() {
