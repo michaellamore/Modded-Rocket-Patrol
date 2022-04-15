@@ -9,7 +9,7 @@ Implement a simultaneous two-player mode (30)
 
 Redesign the game's artwork, UI, and sound to change its theme/aesthetic (60)
 - Created a claw-machine type of game, not sci-fi whatsoever
-- TODO: work on sounds and music
+- TODO: work and music
 
 Display the time remaining (in seconds) on the screen (10)
 - Timer is at the top of the screen everytime player begins playing
