@@ -5,11 +5,12 @@
 
 #arcade-machine{
   width: 1200px;
-  height: 100vh;
+  height: 1925px;
   margin: 0 auto;
   background: url('../assets/arcade_machine.png');
   background-repeat: no-repeat;
-  overflow-x: hidden;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
 }
 
 canvas{
@@ -33,5 +34,5 @@ p{
   font-size: 30px;
   text-align: center;
   color: white;
-  padding-top: 90px;
+  padding-top: 120px;
 }
