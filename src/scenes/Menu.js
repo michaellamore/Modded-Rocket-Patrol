@@ -10,12 +10,20 @@ class Menu extends Phaser.Scene {
     this.load.image('background', './assets/backgroundNEW.png');
 
     // Audio
+    this.load.audio('bgm', './assets/bgm_edited.wav');
     this.load.audio('sfx_select', './assets/menu_select.wav');
     this.load.audio('sfx_animal_grabbed', './assets/animal_grabbed.wav');
     this.load.audio('sfx_claw_fired', './assets/claw_fired.wav');
   }
 
   create() {
+    // If the music isn't playing yet
+    
+    if(!this.findSound('bgm')){
+      this.sound.add('bgm', {volume: 0.1, loop: true}).play();
+    }
+    
+
     this.background = this.add.tileSprite(0,0,640, 480, 'background').setOrigin(0,0);
     this.add.image(0, 0, 'darkenBG').setOrigin(0,0);
     this.title = this.add.image(0, 0, 'title').setOrigin(0,0);
@@ -87,5 +95,13 @@ class Menu extends Phaser.Scene {
       this.sound.play('sfx_select');
       this.scene.start('playScene');
     }
+  }
+
+  findSound(soundKey){
+    let output = false;
+    for (const sound of this.sound.sounds){
+      if (sound.key == soundKey) output = true;
+    }
+    return output;
   }
 }

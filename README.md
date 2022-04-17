@@ -1,7 +1,11 @@
 # Grab 'Em All
 A (heavily) modified version of Rocket Patrol - the APF-M1000 built-in gallery shooter, built using Phaser 3
 
-# POINTS BREAKDOWN
+## CREDITS:
+Background Music: "Powerup!" by Jeremy Blake
+- https://www.youtube.com/watch?v=l7SwiFWOQqM&ab_channel=FreeMusic
+
+## POINTS BREAKDOWN
 I did a little over 100 points in-case I didn't fulfill some of the requirements
 
 Implement a simultaneous two-player mode (30)
@@ -9,7 +13,6 @@ Implement a simultaneous two-player mode (30)
 
 Redesign the game's artwork, UI, and sound to change its theme/aesthetic (60)
 - Created a claw-machine type of game, not sci-fi whatsoever
-- TODO: work and music
 
 Display the time remaining (in seconds) on the screen (10)
 - Timer is at the top of the screen everytime player begins playing

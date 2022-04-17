@@ -71,7 +71,7 @@ class Play extends Phaser.Scene {
     this.animalSpriteArray = [];
 
     // Display score
-    let scoreConfig = {
+    this.scoreConfig = {
       fontFamily: 'Upheavtt',
       fontSize: '28px',
       color: '#FFFFFF',
@@ -125,12 +125,12 @@ class Play extends Phaser.Scene {
     // Play timer
     this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
       this.add.image(0, 0, 'darkenBG').setOrigin(0,0).setDepth(1);
-      this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5).setDepth(2);
+      this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5).setDepth(2);
       this.getHighscore();
-      this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (SPACE) to Restart or (F) for Menu', scoreConfig).setOrigin(0.5).setDepth(2);
+      this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (SPACE) to Restart or (F) for Menu', this.scoreConfig).setOrigin(0.5).setDepth(2);
       this.gameOver = true;
     }, null, this);
-    this.timer = this.add.text(game.config.width/2, borderPadding*2, `${this.clock.delay}`, scoreConfig).setOrigin(0.5, 0);
+    this.timer = this.add.text(game.config.width/2, borderPadding*2, `${this.clock.delay}`, this.scoreConfig).setOrigin(0.5, 0);
 
     this.generateAnimations();
     // Fixes a bug where if the player restarts, they can't actually collide with anything. I think...
@@ -245,6 +245,7 @@ class Play extends Phaser.Scene {
   }
 
   getHighscore(){
+    if(highscore == 0) highscoreConfig = this.scoreConfig;
     if(this.p1Score > this.p2Score && this.p1Score > highscore){
       highscore = this.p1Score;
       highscoreConfig = this.p1Config;

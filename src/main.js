@@ -34,6 +34,13 @@ let borderPadding = borderUISize / 3;
 let startPos = game.config.height - borderUISize - borderPadding;
 let endPos = borderUISize * 2 + borderPadding;
 
+
+/*
+  CREDIT: 
+  Background Music: "Powerup!" by Jeremy Blake
+  https://www.youtube.com/watch?v=l7SwiFWOQqM&ab_channel=FreeMusic
+*/
+
 /*
 POINTS BREAKDOWN
 I did a little over 100 points in-case I didn't fulfill some of the requirements
@@ -43,7 +50,6 @@ Implement a simultaneous two-player mode (30)
 
 Redesign the game's artwork, UI, and sound to change its theme/aesthetic (60)
 - Created a claw-machine type of game, not sci-fi whatsoever
-- TODO: work on music
 
 Display the time remaining (in seconds) on the screen (10)
 - Timer is at the top of the screen everytime player begins playing
