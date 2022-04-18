@@ -2,7 +2,7 @@
 //  Name: Michael Remorin
 //  Project Title: Grab 'Em All
 //  Started: 4/11/2022
-//  Finished: 4/15/2022
+//  Finished: 4/18/2022
 //
 
 let config = {

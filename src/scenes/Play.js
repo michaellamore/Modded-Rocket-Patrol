@@ -3,50 +3,6 @@ class Play extends Phaser.Scene {
     super ("playScene");
   }
 
-  preload() {
-    // Static images
-    this.load.image('background', './assets/backgroundNEW.png');
-    this.load.image('darkenBG', './assets/darkenBG.png');
-    this.load.image('animalCable', './assets/animalCable.png');
-    this.load.image('playerCable', './assets/playerCable.png');
-
-    // Easy
-    this.load.image('cat', './assets/cat.png');
-    this.load.image('fox', './assets/fox.png');
-    this.load.image('dog', './assets/dog.png');
-    this.load.image('rabbit', './assets/rabbit.png');
-    this.load.image('duck', './assets/duck.png');
-    this.load.image('turtle', './assets/turtle.png');
-    this.load.image('owl', './assets/owl.png');
-    this.easySprites = ['cat', 'fox', 'dog', 'rabbit', 'duck', 'turtle', 'owl'];
-
-    // Med
-    this.load.image('llama', './assets/llama.png');
-    this.load.image('deer', './assets/deer.png');
-    this.load.image('whale', './assets/whale.png');
-    this.load.image('bear', './assets/bear.png');
-    this.load.image('pig', './assets/pig.png');
-    this.medSprites = ['llama', 'deer', 'whale', 'bear', 'pig'];
-
-    // Hard
-    this.load.image('panda', './assets/panda.png');
-    this.load.image('lion', './assets/lion.png');
-    this.load.image('elephant', './assets/elephant.png');
-    this.hardSprites = ['panda', 'lion', 'elephant'];
-
-    // Players
-    this.load.spritesheet('p1Open', './assets/p1Open.png', {frameWidth: 48, frameHeight: 48});
-    this.load.spritesheet('p1Closed', './assets/p1Closed.png', {frameWidth: 48, frameHeight: 48});
-    this.load.spritesheet('p2Open', './assets/p2Open.png', {frameWidth: 48, frameHeight: 48});
-    this.load.spritesheet('p2Closed', './assets/p2Closed.png', {frameWidth: 48, frameHeight: 48});
-
-    // Effects
-    this.load.spritesheet('score20', './assets/score20.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
-    this.load.spritesheet('score50', './assets/score50.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
-    this.load.spritesheet('score100', './assets/score100.png', {frameWidth: 96, frameHeight: 72, startFrame: 0, endFrame: 20}); 
-    this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 48, frameHeight: 48, startFrame: 0, endFrame: 8}); 
-  }
-
   create() {
     // place BG sprite
     this.background = this.add.tileSprite(0,0,640, 480, 'background').setOrigin(0,0);
@@ -69,6 +25,9 @@ class Play extends Phaser.Scene {
     this.animalArray = [];
     this.cableArray = [];
     this.animalSpriteArray = [];
+    this.easySprites = ['cat', 'fox', 'dog', 'rabbit', 'duck', 'turtle', 'owl'];
+    this.medSprites = ['llama', 'deer', 'whale', 'bear', 'pig'];
+    this.hardSprites = ['panda', 'lion', 'elephant'];
 
     // Display score
     this.scoreConfig = {
