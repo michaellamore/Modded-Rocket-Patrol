@@ -5,7 +5,7 @@
 
 #arcade-machine{
   width: 1200px;
-  height: 1925px;
+  height: 980px;
   margin: 0 auto;
   background: url('../assets/arcade_machine.png');
   background-repeat: no-repeat;
@@ -15,26 +15,23 @@
 
 canvas{
   display: block;
-  margin: 94px auto;
-  border: solid #151D28 5px;
-  border-radius: 20px;
+  margin: 0px auto;
+  padding-top: 310px;
 }
 
 body{
   margin: 0 auto;
   padding: 0;
   font-family: 'Upheavtt';
-  background: url('../assets/css_background.png');
-  background-size: contain;
+  background: url('../assets/css_background.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   background-position: center top;
   background-repeat: repeat-x;
   background-color: #341C27;
-  
-  
-  /* Hide scrollbar but still be able to scroll */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  overflow: -moz-scrollbars-none;
+  overflow: hidden;
 }
 ::-webkit-scrollbar { 
   width: 0;
@@ -48,4 +45,16 @@ p{
   text-align: center;
   color: white;
   padding-top: 120px;
+}
+
+#arcade-buttons{
+  margin-top: 20px;
+}
+
+#blue-stick{
+  padding-left: 300px;
+}
+
+#red-stick{
+  padding-left: 150px;
 }

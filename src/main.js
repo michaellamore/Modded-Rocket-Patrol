@@ -3,6 +3,7 @@
 //  Project Title: Grab 'Em All
 //  Started: 4/11/2022
 //  Finished: 4/18/2022
+//  Updated: 8/18/2022
 //
 
 let config = {
@@ -16,7 +17,11 @@ let config = {
     target: 60,
     forceSetTimeOut: true
   },
-  scene: [Menu, Play]
+  physics: {
+    default: 'arcade',
+    arcade: { debug: false }
+  },
+  scene: [Menu, Play, Instruction]
 }
 
 let game = new Phaser.Game(config);
@@ -34,6 +39,50 @@ let borderPadding = borderUISize / 3;
 let startPos = game.config.height - borderUISize - borderPadding;
 let endPos = borderUISize * 2 + borderPadding;
 
+// Text configs
+let menuConfig = {
+  fontFamily: 'Upheavtt',
+  fontSize: '24px',
+  color: '#FFFFFF',
+  align: 'center',
+  padding: {
+    top: 5,
+    bottom: 5,
+  },
+  fixedWidth: 0
+}
+let gameoverConfig = {
+  fontFamily: 'Upheavtt',
+  fontSize: '100px',
+  color: '#d12e2e',
+  align: 'center',
+  stroke: '#10141f',
+  strokeThickness: 6
+}
+let scoreConfig = {
+  fontFamily: 'Upheavtt',
+  fontSize: '28px',
+  color: '#FFFFFF',
+  align: 'left',
+  stroke: '#10141f',
+  strokeThickness: 6
+}
+let p1Config = {
+  fontFamily: 'Upheavtt',
+  fontSize: '28px',
+  color: '#4f8fba',
+  align: 'left',
+  stroke: '#10141f',
+  strokeThickness: 6
+}
+let p2Config = {
+  fontFamily: 'Upheavtt',
+  fontSize: '28px',
+  color: '#a53030',
+  align: 'left',
+  stroke: '#10141f',
+  strokeThickness: 6
+}
 
 /*
   CREDIT: 
